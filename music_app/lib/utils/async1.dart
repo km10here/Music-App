@@ -1,33 +1,29 @@
-//how async works
-Future<int> cube(int num) {
-  return Future.value(num * num * num);
+// How Async Work
+
+Future<int> cube(int num){
+  // Future.delayed(Duration(seconds:2), (){
+
+  // }
+  return Future.value(num*num*num);
 }
 
-asyncTask() {
-  // print("I am the first line");
-  Future.delayed(Duration(seconds: 5), () {
-    print("I will call after 5 sec");
-    Future.delayed(Duration(seconds: 4), () {
-      print("I will call after 4 sec");
-      Future.delayed(Duration(seconds: 3), () {
-        print("I will call after 3 sec");
 
-        Future.delayed(Duration(seconds: 2), () {
-          print("I will call after 2 sec");
-
-          Future.delayed(Duration(seconds: 1), () {
-            print("I will call after 1 sec");
-          });
-        });
-      });
-    });
+asyncTask(){
+  print("I am the First Line");
+  Future.delayed(Duration(seconds: 5),(){
+       print("I will Call After 5 sec");   
+       return 1000;
   });
-  // print("I am the last line");
+  print("I am the Last Line");
 }
 
-void main() {
-  // asyncTask();
-  // print("bye bye main...");
-  Future<int> future = cube(2);
-  future.then((value) => print(value)).catchError((err) => print(err));
+
+
+
+void main(){
+  print("I am First ");
+  Future<int> future = cube(3);
+  future.then((value) => print(value)).catchError((err)=>print(err));
+  //asyncTask();
+  print("Bye Bye main...");
 }

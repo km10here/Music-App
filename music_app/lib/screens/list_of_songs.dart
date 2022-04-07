@@ -1,6 +1,9 @@
+import 'dart:html';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/models/song.dart';
+import 'package:music_app/screens/player.dart';
 import 'package:music_app/utils/api_client.dart';
 import 'package:shake/shake.dart';
 
@@ -17,18 +20,28 @@ class _ListOfSongsState extends State<ListOfSongs> {
   List<Song> songs = [];
   dynamic error;
   ApiClient client = ApiClient();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    //detector.stopListening();
+  }
+
+  late ShakeDetector detector;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
+    detector = ShakeDetector.autoStart(onPhoneShake: () {
       // Do stuff on phone shake
-      print("Shake Detect.....");
+      print("Shake Detect.....................");
     });
 
-    detector.startListening();
-
     client.getSongs(getSongList, getSongError);
+    // Future.delayed(Duration(seconds: 5), () {
+    //   Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => Player()));
+    // });
   }
 
   getSongList(List<Song> songs) {
@@ -45,10 +58,18 @@ class _ListOfSongsState extends State<ListOfSongs> {
     return Center(child: CircularProgressIndicator());
   }
 
+  _showPlayer(Song song) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (ctx) => Player(song)));
+  }
+
   ListView _printSong() {
     return ListView.builder(
       itemBuilder: (BuildContext ctx, int index) {
         return ListTile(
+          onTap: () {
+            _showPlayer(songs[index]);
+          },
           leading: Image.network(songs[index].image),
           title: Text(songs[index].trackName),
           subtitle: Text(songs[index].artistName),

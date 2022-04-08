@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/config/constants/app_constants.dart';
 import 'package:music_app/models/song.dart';
 import 'package:music_app/screens/player.dart';
 import 'package:music_app/utils/api_client.dart';
@@ -78,7 +79,9 @@ class _ListOfSongsState extends State<ListOfSongs> {
                 print("Song Play ${songs[index].audio}");
                 currentSongIndex = index;
                 print("Now the current song index $currentSongIndex");
-                await audioPlayer.play(songs[index].audio);
+                int result = await audioPlayer.play(songs[index].audio);
+                if (result == AppConstants.SUCCESS) {
+                } else {}
               },
               icon: Icon(
                 Icons.play_arrow_rounded,
